@@ -1,0 +1,5 @@
+{application, music,
+ [{description, "Minimal live synthesizer"},
+  {vsn, "0.1.0"},
+  {registered, []},
+  {applications, [kernel, stdlib]}]}.
