@@ -53,6 +53,16 @@ bridge(Priv) ->
                 true -> {ok, Bridge, [], []};
                 false -> {error, macos_bridge_not_found}
             end;
+        {unix, linux} ->
+          Bridge = case os:getenv("MUSIC_AUDIO_BRIDGE") of
+                         false -> filename:join(Priv, "linux_wave_out.py");
+                         Path -> Path
+                     end,
+          case {os:find_executable("python3"), filelib:is_regular(Bridge)} of
+                {false, _}     -> {error, python3_not_found};
+                {_, false}     -> {error, linux_bridge_not_found};
+                {Python, true} -> {ok, Python, [Bridge], []}
+          end;
         OsType ->
             {error, {unsupported_platform, OsType}}
     end.
